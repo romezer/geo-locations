@@ -1,0 +1,20 @@
+{
+  "name": "service_3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon node index.js",
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bullmq": "^1.15.0",
+    "dotenv": "^8.2.0",
+    "mongodb": "^3.6.5",
+    "nodemon": "^2.0.7",
+    "uuid": "^8.3.2"
+  }
+}

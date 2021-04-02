@@ -1,0 +1,81 @@
+version: '3'
+
+services:
+  service_1:
+    build: 
+      context: ./service_1
+      args:
+        - NODE_ENV=local
+    ports:
+      - '3001:3001'
+    depends_on: 
+      - redis
+    links: 
+      - redis
+    environment:
+      - REDIS_HOST=redis
+  service_2:
+    build: 
+      context: ./service_2
+      args:
+        - NODE_ENV=local
+    depends_on: 
+      - redis
+    links: 
+      - redis
+    environment:
+      - REDIS_HOST=redis
+  service_3:
+    build: 
+      context: ./service_3
+      args:
+        - NODE_ENV=local
+    depends_on: 
+      - redis
+      - mongodb
+    links: 
+      - redis
+      - mongodb
+    environment:
+      - REDIS_HOST=redis
+      - MONGO_URI=mongodb://mongodb:27017
+  service_4:
+    build: 
+      context: ./service_4
+      args:
+        - NODE_ENV=local
+    ports:
+      - '3004:3004'
+    depends_on: 
+      - mongodb
+    links: 
+      - mongodb
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017
+  redis:
+    image: redis:latest
+    command: ["redis-server", "--bind", "redis", "--port", "6379"]
+  # redis:
+  #   image: 'docker.io/bitnami/redis:6.2-debian-10'
+  #   environment:
+  #     # ALLOW_EMPTY_PASSWORD is recommended only for development.
+  #     - ALLOW_EMPTY_PASSWORD=yes
+  #     - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+  #   ports:
+  #     - '6379:6379'
+  #   command: ["redis-server", "--bind", "redis", "--port", "6379"]
+  #   volumes:
+  #     - 'redis_data:/bitnami/redis/data'
+  mongodb:
+    image: 'mongo:latest'
+    restart: always
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  redis_data:
+    driver: local
+  mongodb_data:
+    driver: local
