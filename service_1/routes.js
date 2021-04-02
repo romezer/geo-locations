@@ -16,7 +16,13 @@ module.exports = (app) => {
         const payload = Object.assign({}, req.body, { timeStamp: new Date(), location: { type: 'Point', coordinates: [ Number(req.body.latitude), Number(req.body.longitude) ]}});
 
         console.log('payload: ', payload);
-        await myQueue.add(jobId, { ... payload });
-        res.send(`Job inserted: ${jobId}`);
+        try{
+            await myQueue.add(jobId, { ... payload });
+            res.send(`Job inserted: ${jobId}`);
+        }
+        catch(error){
+            res.send(error)
+        }
+        
     })
 }
